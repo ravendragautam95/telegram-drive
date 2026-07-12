@@ -60,29 +60,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const [diagLoading, setDiagLoading] = useState(false);
 
     const handleCheckForUpdates = useCallback(async () => {
-        setUpdateChecking(true);
-        try {
-            const updateInfo = await check();
-            if (updateInfo) {
-                setUpdateAvailable(updateInfo);
-                setUpdateVersion(updateInfo.version);
-                toast.success(t('settings.update_available_toast', { version: updateInfo.version }));
-            } else {
-                setUpdateAvailable(null);
-                setUpdateVersion(null);
-                toast.success(t('settings.latest_version_toast'));
-            }
-        } catch (err) {
-            const msg = err instanceof Error ? err.message : String(err);
-            if (msg.includes('dev') || msg.includes('no current version')) {
-                toast.info(t('settings.update_prod_only_toast'));
-            } else {
-                toast.error(t('settings.update_check_failed_toast', { error: msg }));
-            }
-        } finally {
-            setUpdateChecking(false);
-        }
-    }, [t]);
+        toast.info("Updates are disabled in this build.");
+    }, []);
 
     const handleInstallUpdate = useCallback(async () => {
         if (!updateAvailable) return;

@@ -23,28 +23,9 @@ export function useUpdateCheck() {
     const [update, setUpdate] = useState<Update | null>(null);
 
     const checkForUpdates = useCallback(async () => {
-        setState(s => ({ ...s, checking: true, error: null }));
-        try {
-            const updateInfo = await check();
-            if (updateInfo) {
-                setUpdate(updateInfo);
-                setState(s => ({
-                    ...s,
-                    checking: false,
-                    available: true,
-                    version: updateInfo.version,
-                }));
-            } else {
-                setState(s => ({ ...s, checking: false, available: false }));
-            }
-        } catch (err: unknown) {
-            const message = err instanceof Error ? err.message : 'Failed to check for updates';
-            setState(s => ({
-                ...s,
-                checking: false,
-                error: message,
-            }));
-        }
+        // Disabled for unsigned builds
+        setState(s => ({ ...s, checking: false, available: false }));
+        return;
     }, []);
 
     const downloadAndInstall = useCallback(async () => {
